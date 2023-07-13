@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+
+
+// list.blade
+Route::get('/list', 'App\Http\Controllers\JobController@show')->name('list');
+
+// detail.blade
+Route::get('/detail/{id}', 'App\Http\Controllers\JobController@detail')->name('detail');
+
+// create.blade
+Route::get('/create', 'App\Http\Controllers\JobController@create')->name('create');
+Route::post('/create', 'App\Http\Controllers\JobController@store')->name('store');
+
+Route::get('/details/{id}/edit', 'App\Http\Controllers\@edit')->name('details.edit');
+
+
+

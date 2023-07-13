@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DB;
 use App\Models\Job;
 use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
@@ -11,20 +11,32 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function detail($id)
+{
+    $daten = DB::table('jobs')->find($id);
+    return view('detail', compact('daten'));
+}
+    
+    /**
+     * Display the specified resource.
+     */
+    public function show()
     {
-        $jobs = Job::all();
-        return view('jobs.index', compact('jobs'));
-    }
+        $daten = DB::table('jobs')->get();
+        return view('list', compact('daten'));
+    } 
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('jobs.create');
+        return view('create');
     }
 
+   
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -38,35 +50,40 @@ class JobController extends Controller
             'erfahrung' => 'required',
             'sprache' => 'required',
         ]);
-    
         Job::create($validatedData);
+        
     
-        return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
+        return view('index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Job $job)
-    {
-        return view('jobs.show', compact('job'));
-    }
 
+    
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Job $job)
+    public function edit($id)
     {
-        return view('jobs.edit', compact('job'));
+        $daten = DB::table('jobs')->find($id);
+        return view('create.edit', compact('daten'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateJobRequest $request, Job $job)
-    {
-        return view('jobs.update', compact('job'));
-    }
+    public function update(StoreJobRequest $request, $id)
+{
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'description' => 'required',
+        'anstellungsart' => 'required',
+        'standort' => 'required',
+        'erfahrung' => 'required',
+        'sprache' => 'required',
+    ]);
+    Job::update($validatedData);
+
+    return redirect()->route('create.edit');
+}
 
     /**
      * Remove the specified resource from storage.

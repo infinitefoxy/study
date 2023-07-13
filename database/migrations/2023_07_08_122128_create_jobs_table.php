@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jobs', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('title');
             $table->text('description');
-            $table->date('erstellt_am');
             $table->enum('anstellungsart', ['Befristet', 'Festanstellung']);
             $table->enum('standort', ['Berlin', 'Hamburg']);
             $table->enum('erfahrung', ['Trainee', 'Senior']);
             $table->enum('sprache', ['Deutsch', 'Englisch']);
-            $table->foreign('id_user')->references('id')->on('users');
+            // $table->foreignId('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }
